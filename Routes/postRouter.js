@@ -1,5 +1,7 @@
 const express = require('express')
 
+const Post = require('../model/userModel')
+
 const router = express.Router()
 
 const verifyToken = (req, res, next) => {
@@ -9,7 +11,7 @@ const verifyToken = (req, res, next) => {
       return res.status(403).json({ message: 'Token not provided' });
     }
   
-    jwt.verify(token, 'your-secret-key', (err, decoded) => {
+    jwt.verify(token,process.env.SecretKey, (err, decoded) => {
       if (err) {
         return res.status(401).json({ message: 'Invalid token' });
       }
@@ -20,6 +22,7 @@ const verifyToken = (req, res, next) => {
   };
 
 router.post('/posts', verifyToken, async (req, res) => {
+    console.log(req.body);
     try {
       const { title, body, active, latitude, longitude } = req.body;
   
@@ -52,7 +55,7 @@ router.post('/posts', verifyToken, async (req, res) => {
     }
   });
 
-  router.put('/posts/:postId', verifyToken, async (req, res) => {
+  router.put('/posts/:postId', verifyToken, async (req, res) => {a
     try {
       const { title, body, active, latitude, longitude } = req.body;
   
